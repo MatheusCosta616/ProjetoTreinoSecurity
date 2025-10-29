@@ -2,6 +2,7 @@ package com.muts.treinoSecurity.infra.security.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.muts.treinoSecurity.domain.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class TokenService {
             String token = JWT.create()
                     .withIssuer("treino-security-api")
                     .withSubject(user.getEmail())
+                    .withClaim("role", user.getRole().name()) // Adiciona a role ao token
                     .sign(algorithm);
             return token;
         } catch (Exception e) {
@@ -37,6 +39,19 @@ public class TokenService {
                     .build()
                     .verify(token)
                     .getSubject();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public String getRoleFromToken(String token){
+        try{
+            Algorithm algorithm = Algorithm.HMAC256(secretKey);
+            DecodedJWT jwt = JWT.require(algorithm)
+                    .withIssuer("treino-security-api")
+                    .build()
+                    .verify(token);
+            return jwt.getClaim("role").asString();
         } catch (Exception e) {
             return null;
         }

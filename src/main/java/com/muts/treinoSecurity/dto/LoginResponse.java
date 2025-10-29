@@ -1,4 +1,7 @@
 package com.muts.treinoSecurity.dto;
 
-public record LoginResponse() {
+public record LoginResponse(
+        String name,
+        String token
+) {
 }

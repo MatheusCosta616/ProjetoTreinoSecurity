@@ -1,10 +1,9 @@
 package com.muts.treinoSecurity.domain.entity;
 
 import com.muts.treinoSecurity.domain.entity.enums.Role;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -15,6 +14,8 @@ public class User {
     private String username;
     private String password;
     private String email;
+
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     public User() {
